@@ -1,15 +1,15 @@
 services:
-  main-service:
+  ewm-service:
     build: ./ewm-main-service
     image: main-image
     container_name: main-container
     ports:
       - "8080:8080"
     depends_on:
-      - main-db
+      - ewm-db
       - stats-server
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://main-db:5432/main
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://ewm-db:5432/main
 
   stats-server:
     build: ./ewm-stats-service/server
@@ -33,7 +33,7 @@ services:
       - POSTGRES_DB=stats
       - POSTGRES_USER=stats_user
       - POSTGRES_PASSWORD=stats_pass
-  main-db:
+  ewm-db:
     image: postgres:16.1
     container_name: main-db-container
     ports:
