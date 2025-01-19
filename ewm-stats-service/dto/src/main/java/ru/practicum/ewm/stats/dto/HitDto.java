@@ -13,19 +13,15 @@ import java.time.LocalDateTime;
 @Setter
 @Accessors(chain = true)
 public class HitDto {
-    @NotNull
     @Length(max = 255)
     private String app;
 
-    @NotNull
     @Length(max = 255)
     private String uri;
 
-    @NotNull
     @Length(max = 15)
     private String ip;
 
-    @NotNull
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime timestamp;
 }

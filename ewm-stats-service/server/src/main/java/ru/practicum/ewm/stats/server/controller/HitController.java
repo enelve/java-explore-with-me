@@ -2,6 +2,7 @@ package ru.practicum.ewm.stats.server.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -23,7 +24,7 @@ public class HitController {
 
     @PostMapping("/hit")
     @ResponseStatus(HttpStatus.CREATED)
-    public HitDto save(@Valid HitDto hitDto) {
+    public HitDto save(@RequestBody @Valid HitDto hitDto) {
         Hit savedHit = hitService.save(hitDto);
 
         return HitMapper.toDto(savedHit);
@@ -31,8 +32,8 @@ public class HitController {
 
     @GetMapping("/stats")
     public List<StatDto> getStatistic(
-            @RequestParam LocalDateTime start,
-            @RequestParam LocalDateTime end,
+            @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime start,
+            @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime end,
             @RequestParam(required = false) List<String> uris,
             @RequestParam(defaultValue = "false") boolean unique
     ) {
