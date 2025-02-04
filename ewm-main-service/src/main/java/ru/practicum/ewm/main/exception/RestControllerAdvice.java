@@ -20,9 +20,6 @@ import static org.springframework.http.HttpStatus.BAD_REQUEST;
 @ControllerAdvice
 public class RestControllerAdvice {
 
-    private record Error(String error, String description) {
-    }
-
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<RestError> handleValidationExceptions(
             MethodArgumentNotValidException ex) {
