@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.ewm.main.dto.CategoryDto;
 import ru.practicum.ewm.main.entity.Category;
 import ru.practicum.ewm.main.exception.NotFoundException;
@@ -16,6 +17,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 @Slf4j
+@Transactional
 public class CategoryService {
 
     private static final String CATEGORY_NOT_FOUND_MESSAGE = "Category with id=%d was not found";
@@ -34,9 +36,11 @@ public class CategoryService {
     }
 
     public Category patchCategory(Long id, CategoryDto categoryDto) {
-        return categoryRepository.findById(id)
+        Category patchedCategory = categoryRepository.findById(id)
                 .map(category -> CategoryMapper.copyBusinessFields(category, categoryDto))
                 .orElseThrow(() -> new NotFoundException(String.format(CATEGORY_NOT_FOUND_MESSAGE, id)));
+
+        return categoryRepository.save(patchedCategory);
     }
 
     public List<Category> getCategories(Integer from, Integer size) {

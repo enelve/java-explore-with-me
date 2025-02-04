@@ -1,23 +1,25 @@
 package ru.practicum.ewm.main.dto;
 
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import org.hibernate.validator.constraints.Length;
 
+import java.util.Set;
+
 @Getter
 @Setter
 @Accessors(chain = true)
-public class UserDto {
-    @NotNull
+public class CompilationDTO {
+
+    private Integer id;
+
+    private Set<EventShortDto> events;
+
+    private Boolean pinned;
+
     @NotBlank
-    @Email
-    @Length(min = 6, max = 254)
-    private String email;
-    @NotBlank
-    @Length(min = 2, max = 250)
-    private String name;
+    @Length(min = 1, max = 50)
+    private String title;
 }

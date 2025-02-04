@@ -1,6 +1,5 @@
 package ru.practicum.ewm.stats.client;
 
-import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
@@ -12,14 +11,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@AllArgsConstructor
 public class StatisticClient {
     private static final String HIT = "/hit";
     private static final String STATS = "/stats";
 
-    @Value("${stats-server.host}")
-    private String host;
-    RestTemplate restTemplate;
+    private final String host;
+    private final RestTemplate restTemplate;
+
+    public StatisticClient(@Value("${stats-server.host}") String host, RestTemplate restTemplate) {
+        this.host = host;
+        this.restTemplate = restTemplate;
+    }
 
     public ResponseEntity<HitDto> save(HitDto hitDto) {
         String url = host + HIT;

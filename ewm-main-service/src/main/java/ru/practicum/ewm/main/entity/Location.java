@@ -1,5 +1,6 @@
 package ru.practicum.ewm.main.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -14,11 +15,13 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 @Entity
 @Data
 @Accessors(chain = true)
-@Table(name = "category")
-public class Category {
+@Table(name = "location")
+public class Location {
     @Id
     @GeneratedValue(strategy = IDENTITY)
     @Setter(value = AccessLevel.PRIVATE)
+    @JsonIgnore
     private Long id;
-    private String name;
+    private Float lat;
+    private Float lon;
 }
