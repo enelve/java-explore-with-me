@@ -14,7 +14,7 @@ public class RestConfiguration {
     }
 
     @Bean
-    public StatisticClient statisticClient(@Value("${stats-server.host}") String host,
+    public StatisticClient statisticClient(@Value("${stats.url}") String host,
                                            RestTemplate restTemplate) {
         return new StatisticClient(host, restTemplate);
     }

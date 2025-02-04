@@ -18,7 +18,7 @@ public class StatisticClient {
     private final String host;
     private final RestTemplate restTemplate;
 
-    public StatisticClient(@Value("${stats-server.host}") String host, RestTemplate restTemplate) {
+    public StatisticClient(@Value("${stats.url}") String host, RestTemplate restTemplate) {
         this.host = host;
         this.restTemplate = restTemplate;
     }
