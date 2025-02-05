@@ -110,7 +110,6 @@ public class RequestService {
         return requestMapper.requestToDto(request);
     }
 
-    @Transactional(readOnly = true)
     public List<RequestDto> getUserRequests(Long userId) {
         List<Request> requests = requestRepository.findAllByRequesterId(userId);
 
@@ -123,7 +122,6 @@ public class RequestService {
         }
     }
 
-    @Transactional(readOnly = true)
     public List<RequestDto> getUserEventRequests(Long userId, Long eventId) {
       List<Request> requests = requestRepository.findAllByEventIdAndEventInitiatorId(eventId, userId);
 

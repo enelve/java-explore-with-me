@@ -204,7 +204,6 @@ public class EventService {
         return result;
     }
 
-    @Transactional(readOnly = true)
     public List<EventShortDto> getUserEvents(Long userId, Integer from, Integer size) {
         Pageable pageable = PageRequest.of(from / size, size, Sort.by("id").ascending());
 
@@ -223,7 +222,6 @@ public class EventService {
         return eventMapper.eventToEventFullDto(event);
     }
 
-    @Transactional(readOnly = true)
     public EventFullDto getUserEventById(Long userId, Long eventId) {
         Event event = eventRepository.findByIdAndInitiatorId(eventId, userId).orElseThrow(() -> {
             log.error("Calling getUserEventById data: with id {}", userId);

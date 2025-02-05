@@ -17,16 +17,18 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-@Transactional
+
 public class CategoryService {
 
     private static final String CATEGORY_NOT_FOUND_MESSAGE = "Category with id=%d was not found";
     private final CategoryRepository categoryRepository;
 
+    @Transactional
     public Category postCategory(CategoryDto categoryDto) {
         return categoryRepository.save(CategoryMapper.toCategory(categoryDto));
     }
 
+    @Transactional
     public void deleteCategory(Long id) {
         categoryRepository.findById(id)
                 .ifPresentOrElse(categoryRepository::delete,
@@ -35,6 +37,7 @@ public class CategoryService {
                         });
     }
 
+    @Transactional
     public Category patchCategory(Long id, CategoryDto categoryDto) {
         Category patchedCategory = categoryRepository.findById(id)
                 .map(category -> CategoryMapper.copyBusinessFields(category, categoryDto))

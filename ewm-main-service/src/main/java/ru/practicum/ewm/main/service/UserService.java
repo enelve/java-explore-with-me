@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.ewm.main.dto.UserDto;
 import ru.practicum.ewm.main.entity.User;
 import ru.practicum.ewm.main.exception.NotFoundException;
@@ -19,6 +20,7 @@ import java.util.List;
 public class UserService {
     private final UserRepository userRepository;
 
+    @Transactional
     public User postUser(UserDto userDto) {
         return userRepository.save(UserMapper.toUser(userDto));
     }
@@ -31,6 +33,7 @@ public class UserService {
         return userRepository.findAll(pageable).getContent();
     }
 
+    @Transactional
     public void deleteUser(Long id) {
         userRepository.findById(id)
                 .ifPresentOrElse(userRepository::delete,

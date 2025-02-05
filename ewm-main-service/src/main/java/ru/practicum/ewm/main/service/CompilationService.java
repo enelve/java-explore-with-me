@@ -57,7 +57,6 @@ public class CompilationService {
         return compilationMapper.compilationToCompilationDto(compilation);
     }
 
-    @Transactional(readOnly = true)
     public CompilationDTO get(Long compId) {
         Compilation compilation = compilationRepository.findById(compId).orElseThrow(() -> {
             log.error("Calling get data: with id {}", compId);
@@ -67,7 +66,6 @@ public class CompilationService {
         return compilationMapper.compilationToCompilationDto(compilation);
     }
 
-    @Transactional(readOnly = true)
     public List<CompilationDTO> getAll(Boolean pinned, Integer from, Integer size) {
         Sort sort = Sort.by("id").ascending();
         Pageable pageable = PageRequest.of(from / size, size, sort);
