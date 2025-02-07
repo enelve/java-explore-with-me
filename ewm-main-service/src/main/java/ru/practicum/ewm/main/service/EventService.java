@@ -51,7 +51,6 @@ public class EventService {
     @Value("${spring.application.name}")
     private String applicationName;
 
-    @Transactional(readOnly = true)
     public List<EventFullDto> getAdminEvents(List<Long> users, List<EventState> states, List<Long> categories,
                                              LocalDateTime rangeStart, LocalDateTime rangeEnd, Integer from, Integer size) {
        if ((rangeStart != null && rangeEnd != null) && (rangeStart.isAfter(rangeEnd) || rangeStart.isEqual(rangeEnd))) {
@@ -90,7 +89,6 @@ public class EventService {
         }
     }
 
-    @Transactional
     public EventFullDto updateAdminEvent(Long eventId, EventUpdateDTO eventUpdateDto) {
         Event event = eventRepository.findById(eventId).orElseThrow(() -> {
             log.error("Calling updateAdminEvent data: with object {}", eventUpdateDto);
@@ -120,7 +118,7 @@ public class EventService {
         return eventMapper.eventToEventFullDto(event);
     }
 
-    @Transactional(readOnly = true)
+    @Transactional
     public List<EventShortDto> getAllEvents(String text, List<Long> categories, Boolean paid, LocalDateTime rangeStart,
                                             LocalDateTime rangeEnd, Boolean onlyAvailable, Integer from, Integer size,
                                             EventSort sort, HttpServletRequest request) {
@@ -212,7 +210,6 @@ public class EventService {
                 .toList();
     }
 
-    @Transactional
     public EventFullDto addUserEvent(Long userId, NewEventDTO eventDto) {
         Event event = eventMapper.newEventDtoToEvent(eventDto);
 
@@ -233,7 +230,6 @@ public class EventService {
         return eventMapper.eventToEventFullDto(event);
     }
 
-    @Transactional
     public EventFullDto updateUserEventById(Long userId, Long eventId, EventUpdateDTO eventDto) {
         Event event = eventRepository.findByIdAndInitiatorId(eventId, userId).orElseThrow(() -> {
             log.error("Calling updateUserEventById data: with id {}, object {}", userId, eventDto);

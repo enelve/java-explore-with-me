@@ -3,7 +3,6 @@ package ru.practicum.ewm.stats.server.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.ewm.stats.dto.HitDto;
 import ru.practicum.ewm.stats.dto.StatDto;
 import ru.practicum.ewm.stats.server.entity.Hit;
@@ -20,7 +19,6 @@ import java.util.List;
 public class HitService {
     private final HitRepository hitRepository;
 
-    @Transactional
     public Hit save(HitDto hitDto) {
         return hitRepository.save(HitMapper.toHit(hitDto));
     }

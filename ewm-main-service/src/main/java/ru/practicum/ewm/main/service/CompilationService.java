@@ -8,7 +8,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.ewm.main.dto.CompilationDTO;
 import ru.practicum.ewm.main.dto.NewCompilationDTO;
 import ru.practicum.ewm.main.dto.UpdateCompilationRequest;
@@ -29,7 +28,6 @@ public class CompilationService {
     private final EventRepository eventRepository;
     private final CompilationMapper compilationMapper;
 
-    @Transactional
     public CompilationDTO add(NewCompilationDTO compilationDto) {
         Compilation compilation = compilationMapper.newCompilationDtoToCompilation(compilationDto);
 
@@ -43,7 +41,6 @@ public class CompilationService {
         return compilationMapper.compilationToCompilationDto(compilation);
     }
 
-    @Transactional
     public CompilationDTO update(Long compId, UpdateCompilationRequest compRequest) {
         Compilation compilation = compilationRepository.findById(compId).orElseThrow(() -> {
             log.error("Calling update data: with object {}", compRequest);
@@ -79,7 +76,6 @@ public class CompilationService {
         }
     }
 
-    @Transactional
     public void delete(Long compId) {
         try {
             compilationRepository.deleteById(compId);
