@@ -4,7 +4,8 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.Size;
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.experimental.Accessors;
 import ru.practicum.ewm.main.entity.Location;
 import ru.practicum.ewm.main.model.EventState;
@@ -37,7 +38,7 @@ public class EventFullDto {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime eventDate;
 
-    private UserShortDTO initiator;
+    private UserShortDto initiator;
 
     private Location location;
 

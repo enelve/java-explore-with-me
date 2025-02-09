@@ -2,11 +2,13 @@ package ru.practicum.ewm.main.controller;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.ewm.main.dto.*;
+import ru.practicum.ewm.main.service.CommentService;
 import ru.practicum.ewm.main.service.EventService;
 import ru.practicum.ewm.main.service.RequestService;
 
@@ -19,11 +21,12 @@ import java.util.List;
 public class UserRoleController {
     private final EventService eventService;
     private final RequestService requestService;
+    private final CommentService commentService;
 
     @PostMapping("/events")
     @ResponseStatus(HttpStatus.CREATED)
     public EventFullDto addUserEvent(@PathVariable Long userId,
-                                     @RequestBody @Valid NewEventDTO newEventDTO) {
+                                     @RequestBody @Valid NewEventDto newEventDTO) {
         return eventService.addUserEvent(userId, newEventDTO);
     }
 
@@ -43,7 +46,7 @@ public class UserRoleController {
     @PatchMapping("/events/{eventId}")
     public EventFullDto updateUserEventById(@PathVariable @NotNull Long userId,
                                             @PathVariable @NotNull Long eventId,
-                                            @RequestBody @Valid EventUpdateDTO eventDto) {
+                                            @RequestBody @Valid EventUpdateDto eventDto) {
         return eventService.updateUserEventById(userId, eventId, eventDto);
     }
 
@@ -72,9 +75,51 @@ public class UserRoleController {
     }
 
     @PatchMapping("/events/{eventId}/requests")
-    public EventRequestStatusUpdateResult updateUserEventRequests(@PathVariable Long userId,
-                                                                  @PathVariable Long eventId,
-                                                                  @RequestBody EventRequestStatusUpdateRequest requestsUpdate) {
+    public EventRequestStatusUpdateResultDto updateUserEventRequests(@PathVariable Long userId,
+                                                                     @PathVariable Long eventId,
+                                                                     @RequestBody EventRequestStatusUpdateRequestDto requestsUpdate) {
         return requestService.updateEventRequests(userId, eventId, requestsUpdate);
+    }
+
+    @PostMapping("/events/{eventId}/comments")
+    @ResponseStatus(HttpStatus.CREATED)
+    public CommentDto addComment(@PathVariable @Positive Long userId,
+                                 @PathVariable @Positive Long eventId,
+                                 @RequestBody @Valid NewCommentDto newCommentDto) {
+        return commentService.addComment(userId, eventId, newCommentDto);
+    }
+
+    @GetMapping("/events/{eventId}/comments/{commentId}")
+    public CommentDto getComment(@PathVariable @Positive Long userId,
+                                 @PathVariable @Positive Long eventId,
+                                 @PathVariable @Positive Long commentId) {
+        return commentService.getComment(userId, eventId, commentId);
+    }
+
+    @GetMapping("/events/{eventId}/comments")
+    public List<CommentDto> getComments(@PathVariable @Positive Long userId,
+                                        @PathVariable @Positive Long eventId) {
+        return commentService.getComments(userId, eventId);
+    }
+
+    @GetMapping("/comments")
+    public List<CommentDto> getComments(@PathVariable @Positive Long userId) {
+        return commentService.getComments(userId);
+    }
+
+    @PatchMapping("/events/{eventId}/comments/{commentId}")
+    public CommentDto updateComment(@PathVariable @Positive Long userId,
+                                    @PathVariable @Positive Long eventId,
+                                    @PathVariable @Positive Long commentId,
+                                    @RequestBody @Valid NewCommentDto newCommentDto) {
+        return commentService.updateComment(userId, eventId, commentId, newCommentDto);
+    }
+
+    @DeleteMapping("/events/{eventId}/comments/{commentId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteComment(@PathVariable @Positive Long userId,
+                              @PathVariable @Positive Long eventId,
+                              @PathVariable @Positive Long commentId) {
+     commentService.deleteComment(userId, eventId, commentId);
     }
 }

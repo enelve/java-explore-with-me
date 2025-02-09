@@ -11,13 +11,11 @@ import java.util.Set;
 @Getter
 @Setter
 @Accessors(chain = true)
-public class CompilationDTO {
+public class NewCompilationDto {
 
-    private Integer id;
+    private Set<Long> events;
 
-    private Set<EventShortDto> events;
-
-    private Boolean pinned;
+    private Boolean pinned = false;
 
     @NotBlank
     @Length(min = 1, max = 50)

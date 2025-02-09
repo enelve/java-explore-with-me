@@ -3,6 +3,7 @@ package ru.practicum.ewm.main.controller;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -10,10 +11,8 @@ import ru.practicum.ewm.main.dto.*;
 import ru.practicum.ewm.main.entity.Category;
 import ru.practicum.ewm.main.entity.User;
 import ru.practicum.ewm.main.model.EventState;
-import ru.practicum.ewm.main.service.CategoryService;
-import ru.practicum.ewm.main.service.CompilationService;
-import ru.practicum.ewm.main.service.EventService;
-import ru.practicum.ewm.main.service.UserService;
+import ru.practicum.ewm.main.repository.CommentFilter;
+import ru.practicum.ewm.main.service.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -27,6 +26,7 @@ public class AdminRoleController {
     private final CategoryService categoryService;
     private final EventService eventService;
     private final CompilationService compilationService;
+    private final CommentService commentService;
 
     @PostMapping("/users")
     @ResponseStatus(HttpStatus.CREATED)
@@ -67,13 +67,13 @@ public class AdminRoleController {
 
     @PostMapping("/compilations")
     @ResponseStatus(HttpStatus.CREATED)
-    public CompilationDTO addEventCompilation(@RequestBody @Valid NewCompilationDTO compilationDto) {
+    public CompilationDto addEventCompilation(@RequestBody @Valid NewCompilationDto compilationDto) {
         return compilationService.add(compilationDto);
     }
 
     @PatchMapping("/compilations/{compId}")
-    public CompilationDTO updateEventCompilation(@PathVariable Long compId,
-                                                 @RequestBody @Valid UpdateCompilationRequest compRequest) {
+    public CompilationDto updateEventCompilation(@PathVariable Long compId,
+                                                 @RequestBody @Valid UpdateCompilationRequestDto compRequest) {
         return compilationService.update(compId, compRequest);
     }
 
@@ -98,7 +98,17 @@ public class AdminRoleController {
 
     @PatchMapping(path = "/events/{eventId}")
     public EventFullDto updateAdminEvent(@PathVariable("eventId") Long eventId,
-                                         @RequestBody @Valid EventUpdateDTO eventUpdateDto) {
+                                         @RequestBody @Valid EventUpdateDto eventUpdateDto) {
         return eventService.updateAdminEvent(eventId, eventUpdateDto);
+    }
+
+    @GetMapping("/comments")
+    public List<CommentDto> getComments(CommentFilter commentFilter, Pageable pageable) {
+    return commentService.getComments(commentFilter, pageable);
+    }
+
+    @PatchMapping("/comments")
+    public List<CommentDto> updateComment(@RequestBody CommentStatusUpdateDto updateRequest) {
+        return commentService.updateComment(updateRequest);
     }
 }

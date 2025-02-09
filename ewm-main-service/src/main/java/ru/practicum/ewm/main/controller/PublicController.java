@@ -8,7 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import ru.practicum.ewm.main.dto.CompilationDTO;
+import ru.practicum.ewm.main.dto.CompilationDto;
 import ru.practicum.ewm.main.dto.EventFullDto;
 import ru.practicum.ewm.main.dto.EventShortDto;
 import ru.practicum.ewm.main.entity.Category;
@@ -40,7 +40,7 @@ public class PublicController {
     }
 
     @GetMapping("/compilations")
-    public List<CompilationDTO> getCompilations(@RequestParam(required = false) Boolean pinned,
+    public List<CompilationDto> getCompilations(@RequestParam(required = false) Boolean pinned,
                                                 @PositiveOrZero @RequestParam(defaultValue = "0") Integer from,
                                                 @Positive @RequestParam(defaultValue = "10") Integer size) {
          return compilationService.getAll(pinned, from, size);
@@ -48,7 +48,7 @@ public class PublicController {
 
     @GetMapping("/compilations/{compId}")
     @ResponseStatus(HttpStatus.OK)
-    public CompilationDTO getCompilationById(@PathVariable Long compId) {
+    public CompilationDto getCompilationById(@PathVariable Long compId) {
         return compilationService.get(compId);
     }
 

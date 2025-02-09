@@ -12,8 +12,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.ewm.main.dto.EventFullDto;
 import ru.practicum.ewm.main.dto.EventShortDto;
-import ru.practicum.ewm.main.dto.EventUpdateDTO;
-import ru.practicum.ewm.main.dto.NewEventDTO;
+import ru.practicum.ewm.main.dto.EventUpdateDto;
+import ru.practicum.ewm.main.dto.NewEventDto;
 import ru.practicum.ewm.main.entity.Category;
 import ru.practicum.ewm.main.entity.Event;
 import ru.practicum.ewm.main.entity.User;
@@ -89,7 +89,7 @@ public class EventService {
         }
     }
 
-    public EventFullDto updateAdminEvent(Long eventId, EventUpdateDTO eventUpdateDto) {
+    public EventFullDto updateAdminEvent(Long eventId, EventUpdateDto eventUpdateDto) {
         Event event = eventRepository.findById(eventId).orElseThrow(() -> {
             log.error("Calling updateAdminEvent data: with object {}", eventUpdateDto);
             throw new NotFoundException("Event with id = " + eventId + " is not found.");
@@ -210,7 +210,7 @@ public class EventService {
                 .toList();
     }
 
-    public EventFullDto addUserEvent(Long userId, NewEventDTO eventDto) {
+    public EventFullDto addUserEvent(Long userId, NewEventDto eventDto) {
         Event event = eventMapper.newEventDtoToEvent(eventDto);
 
         updateEvent(event, userId, eventDto);
@@ -230,7 +230,7 @@ public class EventService {
         return eventMapper.eventToEventFullDto(event);
     }
 
-    public EventFullDto updateUserEventById(Long userId, Long eventId, EventUpdateDTO eventDto) {
+    public EventFullDto updateUserEventById(Long userId, Long eventId, EventUpdateDto eventDto) {
         Event event = eventRepository.findByIdAndInitiatorId(eventId, userId).orElseThrow(() -> {
             log.error("Calling updateUserEventById data: with id {}, object {}", userId, eventDto);
             throw new NotFoundException("Event with id = " + eventId + " and user id = " + userId + " is not found.");
@@ -269,7 +269,7 @@ public class EventService {
 
     }
 
-    private void updateEvent(Event event, Long userId, NewEventDTO eventDto) {
+    private void updateEvent(Event event, Long userId, NewEventDto eventDto) {
         User initiator = userRepository.findById(userId).orElseThrow(() -> {
             throw new NotFoundException("User with id = " + userId + " doesn't exist.");
         });
@@ -294,7 +294,7 @@ public class EventService {
         event.setState(EventState.PENDING);
     }
 
-    private void updateEvent(Event event, EventUpdateDTO eventUpdateDto) {
+    private void updateEvent(Event event, EventUpdateDto eventUpdateDto) {
         if (eventUpdateDto.getAnnotation() != null) {
             event.setAnnotation(eventUpdateDto.getAnnotation());
         }
