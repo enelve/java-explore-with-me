@@ -9,6 +9,7 @@ import ru.practicum.ewm.stats.server.entity.Hit;
 import ru.practicum.ewm.stats.server.mapper.HitMapper;
 import ru.practicum.ewm.stats.server.repository.HitRepository;
 
+import java.time.DateTimeException;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -23,6 +24,9 @@ public class HitService {
     }
 
     public List<StatDto> getStatistic(LocalDateTime start, LocalDateTime end, List<String> uris, boolean unique) {
+        if (start.isAfter(end)) {
+            throw new DateTimeException("Invalid dates");
+        }
         List<StatDto> result = (unique)
                 ? hitRepository.findUnique(start, end)
                 : hitRepository.findAll(start, end);
