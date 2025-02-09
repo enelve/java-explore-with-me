@@ -2,8 +2,8 @@ package ru.practicum.ewm.main.mapper;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import ru.practicum.ewm.main.dto.CompilationDTO;
-import ru.practicum.ewm.main.dto.NewCompilationDTO;
+import ru.practicum.ewm.main.dto.CompilationDto;
+import ru.practicum.ewm.main.dto.NewCompilationDto;
 import ru.practicum.ewm.main.entity.Compilation;
 
 @Component
@@ -11,7 +11,7 @@ import ru.practicum.ewm.main.entity.Compilation;
 public class CompilationMapper {
     private final EventMapper eventMapper;
 
-    public Compilation newCompilationDtoToCompilation(NewCompilationDTO compilationDto) {
+    public Compilation newCompilationDtoToCompilation(NewCompilationDto compilationDto) {
         if (compilationDto == null) {
             return null;
         } else {
@@ -22,11 +22,11 @@ public class CompilationMapper {
         }
     }
 
-    public CompilationDTO compilationToCompilationDto(Compilation compilation) {
+    public CompilationDto compilationToCompilationDto(Compilation compilation) {
         if (compilation == null) {
             return null;
         } else {
-            CompilationDTO compilationDTO = new CompilationDTO();
+            CompilationDto compilationDTO = new CompilationDto();
             if (compilation.getId() != null) {
                 compilationDTO.setId(compilation.getId().intValue());
             }

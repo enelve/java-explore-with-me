@@ -5,8 +5,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.practicum.ewm.main.dto.EventRequestStatusUpdateRequest;
-import ru.practicum.ewm.main.dto.EventRequestStatusUpdateResult;
+import ru.practicum.ewm.main.dto.EventRequestStatusUpdateRequestDto;
+import ru.practicum.ewm.main.dto.EventRequestStatusUpdateResultDto;
 import ru.practicum.ewm.main.dto.RequestDto;
 import ru.practicum.ewm.main.entity.Event;
 import ru.practicum.ewm.main.entity.Request;
@@ -135,8 +135,8 @@ public class RequestService {
     }
 
     @Transactional
-    public EventRequestStatusUpdateResult updateEventRequests(Long userId, Long eventId,
-                                                              @Valid EventRequestStatusUpdateRequest requestsUpdate) {
+    public EventRequestStatusUpdateResultDto updateEventRequests(Long userId, Long eventId,
+                                                                 @Valid EventRequestStatusUpdateRequestDto requestsUpdate) {
         Event event = eventRepository.findByIdAndInitiatorId(eventId, userId).orElseThrow(() -> {
             log.error("Calling updateEventRequests data: with id {}, event id {}", userId, eventId);
             throw new NotFoundException("Event with id = " + eventId + " and user id = " + userId + " doesn't exist.");
@@ -170,11 +170,11 @@ public class RequestService {
                 requestRepository.save(request);
                 rejectedRequests.add(requestMapper.requestToDto(request));
             });
-            return new EventRequestStatusUpdateResult(confirmedRequests, rejectedRequests);
+            return new EventRequestStatusUpdateResultDto(confirmedRequests, rejectedRequests);
         }
 
         if (event.getParticipantLimit() == 0 || !event.getRequestModeration()) {
-            return new EventRequestStatusUpdateResult(
+            return new EventRequestStatusUpdateResultDto(
                     requests.stream().map(requestMapper::requestToDto).toList(),
                     new ArrayList<>()
             );
@@ -201,7 +201,7 @@ public class RequestService {
         if (!confirmedRequests.isEmpty()) {
             eventRepository.save(event);
         }
-      return new EventRequestStatusUpdateResult(confirmedRequests, rejectedRequests);
+      return new EventRequestStatusUpdateResultDto(confirmedRequests, rejectedRequests);
     }
 
     @Transactional

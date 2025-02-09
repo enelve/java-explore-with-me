@@ -61,7 +61,7 @@ public class EventMapper {
         }
     }
 
-    public Event newEventDtoToEvent(NewEventDTO eventDto) {
+    public Event newEventDtoToEvent(NewEventDto eventDto) {
         if (eventDto == null) {
             return null;
         } else {
@@ -106,11 +106,11 @@ public class EventMapper {
         }
     }
 
-    protected UserShortDTO userToUserShortDTO(User user) {
+    protected UserShortDto userToUserShortDTO(User user) {
         if (user == null) {
             return null;
         } else {
-            UserShortDTO userShortDTO = new UserShortDTO();
+            UserShortDto userShortDTO = new UserShortDto();
             userShortDTO.setId(user.getId());
             userShortDTO.setName(user.getName());
             return userShortDTO;
